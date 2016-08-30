@@ -2,9 +2,15 @@ FROM php:7.0.7-cli
 
 RUN docker-php-ext-install pdo_mysql
 
-RUN apt-get update
-RUN apt-get install -y libzip-dev
-RUN docker-php-ext-install zip
+RUN apt-get update && \
+  apt-get install -y libzip-dev && \
+  rm -rf /var/lib/apt/lists/* && \
+  docker-php-ext-install zip
 
-ADD https://getcomposer.org/installer composer-setup.php
-RUN php composer-setup.php && unlink composer-setup.php
+RUN curl -o composer-setup.php https://getcomposer.org/installer && php composer-setup.php && unlink composer-setup.php
+
+RUN apt-get update && \
+  apt-get install -y libldap2-dev && \
+  rm -rf /var/lib/apt/lists/* && \
+  docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ && \
+  docker-php-ext-install ldap
