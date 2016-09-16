@@ -14,3 +14,9 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/* && \
   docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ && \
   docker-php-ext-install ldap
+
+RUN apt-get update && \
+  apt-get install -y libzmq-dev && \
+  rm -rf /var/lib/apt/lists/* && \
+  pecl install zmq-beta && \
+  docker-php-ext-enable zmq
